@@ -2,6 +2,7 @@
 using API.Entities;
 using API.Repositories;
 using Microsoft.AspNetCore.Http.HttpResults;
+using API.Models.Converters;
 
 namespace API.Services
 {
@@ -14,20 +15,14 @@ namespace API.Services
             _repository = repository;
         }
 
-        public async Task<UserRequest> CreateUserRequest(UserRequest userRequest)
+        public async Task<List<UserRequest>> GetUsersRequest()
         {
-            var user = new UserEntity
-            {
-                Nome = userRequest.Nome,
-                Sobrenome = userRequest.Sobrenome,
-                Cpf = userRequest.Cpf,
-                DataNascimento = userRequest.DataNascimento
-            };
+            var users = await _repository.GetUsersAsync();
 
-             await _repository.CreateEntity(user);
-
-            return userRequest;
+            var usersRequest = UserConvert.UserEntitytoRequestList(users);
+            return usersRequest;
         }
+
 
         public async Task<UserRequest> GetByIdUserRequest(int id)
         {
@@ -38,27 +33,30 @@ namespace API.Services
                 return null;
             }
 
-            var userRequest = new UserRequest
-            {
-                Nome = userEntity.Nome,
-                Sobrenome = userEntity.Sobrenome,
-                Cpf = userEntity.Cpf,
-                DataNascimento = userEntity.DataNascimento
-            };
+            var user = UserConvert.UserEntityToRequest(userEntity);
+            
+            return user;
 
-            return userRequest;
+        }
 
+        public async Task<bool> CreateUserRequest(UserRequest userRequest)
+        {
+            var user = UserConvert.UserRequestToEntity(userRequest);
+
+            await _repository.CreateEntity(user);
+
+            return true;
         }
 
         public async Task<UserRequest> UpdateUserRequest(int id, UserRequest userRequest)
         {
             var userEntity = await _repository.GetByIdEntity(id);
 
-            if(userEntity == null)
+            if (userEntity == null)
             {
-                return null;
-            }
+                return null;            }
 
+           
             userEntity.Nome = userRequest.Nome;
             userEntity.Sobrenome = userRequest.Sobrenome;
             userEntity.Cpf = userRequest.Cpf;
@@ -66,17 +64,10 @@ namespace API.Services
 
             await _repository.UpdateEntity(userEntity);
 
-            var userUpdateRequest = new UserRequest
-            {
-                Nome = userEntity.Nome,
-                Sobrenome = userEntity.Sobrenome,
-                Cpf = userEntity.Cpf,
-                DataNascimento = userEntity.DataNascimento
-            };
-
-            return userUpdateRequest;           
-
+            var userUpdateRequest = UserConvert.UserEntityToRequest(userEntity);
+            return userUpdateRequest;
         }
+
 
         public async Task<bool> DeleteUserRequest(int id)
         {
