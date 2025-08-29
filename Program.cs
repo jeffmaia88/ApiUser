@@ -1,14 +1,24 @@
+using API.Controllers;
 using API.Data;
-using API.Controller;
+using API.Repositories;
+using API.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDbContext<UserDataContext>(options =>
+    options.UseSqlServer("Server=localhost,1433;Database=ApiDatabase;User ID=sa;Password=Figure09LP$;TrustServerCertificate=True;"));
+
+
+builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<UserService>();
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<UserDataContext>();
 
 var app = builder.Build();
 
+app.UseHttpsRedirection();
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();

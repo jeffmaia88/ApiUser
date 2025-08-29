@@ -2,7 +2,7 @@
 using API.Services;
 using API.Models;
 
-namespace API.Controller
+namespace API.Controllers
 {
     [ApiController]
     [Route("v1/users")]
@@ -46,11 +46,11 @@ namespace API.Controller
 
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody]UserRequest userRequest)
+        public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] UserRequest userRequest)
         {
             var user = await _userService.UpdateUserRequest(id, userRequest);
             if (user == null)
-            { 
+            {
             }
 
             return Ok(user);
@@ -68,7 +68,7 @@ namespace API.Controller
             return Ok();
         }
 
-            
+
 
     }
 }

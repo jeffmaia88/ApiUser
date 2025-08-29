@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(UserDataContext))]
-    [Migration("20250829032037_APICreateDatabase")]
-    partial class APICreateDatabase
+    [Migration("20250829222334_CreateApiDataBase")]
+    partial class CreateApiDataBase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace API.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("API.Entity.UserEntity", b =>
+            modelBuilder.Entity("API.Entities.UserEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

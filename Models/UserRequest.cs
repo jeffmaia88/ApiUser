@@ -15,7 +15,7 @@ namespace API.Models
         [Required]
         [MinLength(11, ErrorMessage = "O Campo precisa ter ao menos 11 caracteres")]
         public string Cpf { get; set; }
-        [Required]
+
         public DateTime DataNascimento { get; set; }
     }
 }

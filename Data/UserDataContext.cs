@@ -6,18 +6,18 @@ namespace API.Data
 {
     public class UserDataContext : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        public UserDataContext(DbContextOptions<UserDataContext> options)
+            : base(options)
         {
-            options.UseSqlServer("Server=localhost,1433;Database=ApiDatabase;User ID=sa;Password=Figure09LP$;TrustServerCertificate=True;");
         }
+
+        public DbSet<UserEntity> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new UserMap());
         }
-
-
-        public DbSet<UserEntity> Users { get; set; }
+       
 
     }
 }
