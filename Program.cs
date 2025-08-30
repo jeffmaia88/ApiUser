@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<UserDataContext>(options =>
+object value = builder.Services.AddDbContext<UserDataContext>(options =>
     options.UseSqlServer("Server=localhost,1433;Database=ApiDatabase;User ID=sa;Password=Figure09LP$;TrustServerCertificate=True;"));
 
 
